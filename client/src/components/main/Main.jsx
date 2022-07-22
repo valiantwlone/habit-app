@@ -14,6 +14,12 @@ const Main = () => {
   const [currentTaskId, setCurrentTaskId] = React.useState(
     tasks[0]  &&   "")
 
+fetch("http://localhost:3001/tasks")
+    .then(res => res.json())
+    .then(data =>setTasks(data))
+    .then(data =>console.log(data))
+
+
 React.useEffect(() => {
   localStorage.setItem("tasks", JSON.stringify(tasks))
 

@@ -11,7 +11,7 @@ const Task = (props) => {
     <div>
         <div className="task-container" key={task.id}>
 
-            <h1 className='taskId' name="id">{task.id+1}</h1>
+            <h1 className='taskId' name="id">{parseInt(task.id)+1}</h1>
             <div
              className= {task.ticked ?'tick' : "untick"}
              name="ticked"

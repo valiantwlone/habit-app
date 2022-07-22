@@ -8,6 +8,7 @@ const PORT=process.env.PORT || 3001
 const DB_URI = process.env.DB_URI
 
 
+
 app.use(express.json())
 app.use(cors())
 app.use(express.json())
@@ -35,6 +36,12 @@ app.get('/addNewTask',async (req,res)=>{
         res.end('User not added')
     }
 })
+
+const usersRouter = require('./routes/users')
+app.use('/users', usersRouter)
+
+const tasksRouter = require ('./routes/tasks')
+app.use('/tasks', tasksRouter)
 
 app.listen(PORT, ()=>{
     console.log(`--------Server running on port ${PORT}--------`);
