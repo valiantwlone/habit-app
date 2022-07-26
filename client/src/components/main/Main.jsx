@@ -1,9 +1,10 @@
 import React from 'react'
 import Task from '../task/Task'
 import {data} from "../../data.js"
-import Sidebar from '../sidebar/Sidebar';
-import Split from 'react-split'
 import "../../style.css"
+import './main.css'
+const API_BASE = 'localhost:3001';
+
 
 
 const Main = () => {
@@ -14,10 +15,13 @@ const Main = () => {
   const [currentTaskId, setCurrentTaskId] = React.useState(
     tasks[0]  &&   "")
 
-fetch("http://localhost:3001/tasks")
-    .then(res => res.json())
-    .then(data =>setTasks(data))
-    .then(data =>console.log(data))
+    React.useEffect(() => {
+      fetch("http://localhost:3001/tasks")
+      .then(res => res.json())
+      .then(data =>setTasks(data))
+    
+    },[])
+
 
 
 React.useEffect(() => {
@@ -73,13 +77,10 @@ function createNewTask(tasks){
 
 
   return (
-    <div>
-        <Split 
-                sizes={[30, 70]} 
-                direction="horizontal" 
-                className="split"
-        >
-          <Sidebar />
+    <div className='main-container'>
+
+          <h1 className='main-title'>These are your tasks today , Valiant.</h1>
+          <h4> Your tasks</h4>
           <Task
           tasks={tasks}
           updateTask={updateTask}
@@ -89,9 +90,7 @@ function createNewTask(tasks){
           updateTicked={updateTicked}
           createNewTask={createNewTask}
           />
-        </ Split >
-
-
+  
     </div>
   )
 }

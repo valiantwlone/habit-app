@@ -1,6 +1,8 @@
 import React from 'react'
 import "./task.css"
 import TextareaAutosize from 'react-textarea-autosize';
+import Button from 'react-bootstrap/Button';
+
 
 
 const Task = (props) => {
@@ -9,7 +11,7 @@ const Task = (props) => {
     const taskElements= props.tasks.map((task,index) =>(
     
     <div>
-        <div className="task-container" key={task.id}>
+        <div className="task-container" key={task._id}>
 
             <h1 className='taskId' name="id">{parseInt(task.id)+1}</h1>
             <div
@@ -28,6 +30,10 @@ const Task = (props) => {
                 value={task.body}
                 />
             </div>
+            <Button className="update-button" variant="outline-secondary">Update</Button>
+            <Button className="dlt-button" variant="outline-secondary">Delete</Button>
+
+
         </div>
 
         { 

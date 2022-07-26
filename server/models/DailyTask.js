@@ -1,10 +1,7 @@
 const mongoose = require("mongoose")
 
 const DailyTaskSchema= new mongoose.Schema({
-    id:{
-        type:String,
-        required:true
-    },
+
     username:{
         type:String,
         required: true
