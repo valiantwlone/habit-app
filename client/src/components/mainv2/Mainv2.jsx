@@ -3,6 +3,8 @@ import './mainv2.css'
 import {useState, useEffect} from 'react'
 import axios from 'axios';
 import {nanoid} from 'nanoid'
+import Alert from 'react-bootstrap/Alert';
+
 
 const API_BASE = 'http://localhost:3001';
 
@@ -12,6 +14,7 @@ const Mainv2 = () => {
   const[newTaskActive , setNewTaskActive]= useState(false)
   const [newTodo, setNewTodo] = useState("");
   const [newTaskBody, setNewTaskBody] = useState ("")
+  const [success , setSuccess] = useState (false)
   const ref = React.useRef(null);
 
   const handleClick = () => {
@@ -60,8 +63,7 @@ const Mainv2 = () => {
  const submitNewTask = async(newTaskBody) =>{
   const newNanoid = nanoid()
   const newTaskData = { 
-      "_id": newNanoid,
-      "id" : "1",
+      "id" : newNanoid,
       "username" : "Valiant",
       "body" : newTaskBody,
       "ticked" : false
@@ -71,7 +73,8 @@ const Mainv2 = () => {
   .then(res=> console.log(res.data))
   .catch (err => console.error("Error :", err));
 
-  setTasks(oldTasks => oldTasks.push(newTaskData))
+  GetTasks();
+    // setTasks(tasks => tasks.push(newTaskData))
   console.log(tasks)
  }
 
@@ -103,6 +106,8 @@ const Mainv2 = () => {
 
   return (
     <div className='main-container'>
+    <Alert variant="success">Data is saved sucessfully</Alert>  
+
         <h1>WELLCOME VALIANT</h1>
         <h4>Your Tasks</h4>
         <div className="todos">
@@ -145,10 +150,9 @@ const Mainv2 = () => {
               >x</div> 
           </div>
           }
-
-
         </div>
       <div onClick={()=> {setNewTaskActive(!newTaskActive);}} className="add-task">+</div>
+
     </div>
   )
 }
