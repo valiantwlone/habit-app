@@ -17,4 +17,16 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/signup').post(async (req,res) => {
+  const {email, password} = req.body
+
+  try{
+    const user = await User.signup(email, password)
+    res.status(200).json({email,user})
+  }catch(error){
+    res.status(400).json(error)
+  }
+  
+})
+
 module.exports = router;

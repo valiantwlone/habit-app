@@ -4,17 +4,17 @@ import {useState, useEffect} from 'react'
 import axios from 'axios';
 import {nanoid} from 'nanoid'
 import Alert from 'react-bootstrap/Alert';
-
-
+import Fade from 'react-bootstrap/Fade'
 const API_BASE = 'http://localhost:3001';
 
-const Mainv2 = () => {
+function Mainv2 () {
 
   const[tasks, setTasks]= useState([]);
   const[newTaskActive , setNewTaskActive]= useState(false)
   const [newTodo, setNewTodo] = useState("");
   const [newTaskBody, setNewTaskBody] = useState ("")
   const [success , setSuccess] = useState (false)
+  
   const ref = React.useRef(null);
 
   const handleClick = () => {
@@ -71,6 +71,8 @@ const Mainv2 = () => {
   console.log(newTaskData)
   await axios.post(API_BASE+"/Tasks/add",newTaskData)
   .then(res=> console.log(res.data))
+  .then(setNewTaskActive(!newTaskActive))
+  .then(setSuccess(true))
   .catch (err => console.error("Error :", err));
 
   GetTasks();
@@ -106,7 +108,6 @@ const Mainv2 = () => {
 
   return (
     <div className='main-container'>
-    <Alert variant="success">Data is saved sucessfully</Alert>  
 
         <h1>WELLCOME VALIANT</h1>
         <h4>Your Tasks</h4>
@@ -140,7 +141,7 @@ const Mainv2 = () => {
               >
               </input>
               <div 
-              onClick={()=> {setNewTaskActive(!newTaskActive);submitNewTask(newTaskBody)}}
+              onClick={()=> submitNewTask(newTaskBody)}
               className="submit-todo"
               >✓</div>
               <div 
@@ -150,6 +151,7 @@ const Mainv2 = () => {
               >x</div> 
           </div>
           }
+          {success && <Fade in="true"><Alert dismissable="true" variant="success" transition="fade"> New Task Added ! </Alert></Fade>}
         </div>
       <div onClick={()=> {setNewTaskActive(!newTaskActive);}} className="add-task">+</div>
 
