@@ -109,7 +109,7 @@ function Mainv2 () {
   return (
     <div className='main-container'>
 
-        <h1>WELLCOME VALIANT</h1>
+        <h1> Hello Valiant </h1>
         <h4>Your Tasks</h4>
         <div className="todos">
           {tasks.map(task =>(

@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import Navbar from './components/navbar/Navbar';
 import React from 'react'
 import Home from "./components/home/Home"
+import Signup from "./components/signup/Signup"
+
 
 
 
@@ -14,11 +16,11 @@ function App() {
     <Router>
       
        <Navbar />
-
         <Routes>
           <Route path="/Mainv2" exact element={<Mainv2/>} />
           <Route path="/main" element={<Mainv2/>} />
           <Route path="/login" element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
         </Routes>
       
     </Router>
