@@ -5,6 +5,7 @@ import axios from 'axios';
 import {nanoid} from 'nanoid'
 import Alert from 'react-bootstrap/Alert';
 import Fade from 'react-bootstrap/Fade'
+import { useAuthContext } from '../../hooks/useAuthContext';
 const API_BASE = 'http://localhost:3001';
 
 function Mainv2 () {
@@ -14,6 +15,8 @@ function Mainv2 () {
   const [newTodo, setNewTodo] = useState("");
   const [newTaskBody, setNewTaskBody] = useState ("")
   const [success , setSuccess] = useState (false)
+  const {user} = useAuthContext()
+
   
   const ref = React.useRef(null);
 
@@ -22,10 +25,12 @@ function Mainv2 () {
   };
 
   useEffect( ()=>{
-     GetTasks();
-     
+    if(user){
+      GetTasks()
 
-  },[tasks])
+    }
+
+  },[user, tasks])
 
   useEffect( ()=>{
     
@@ -37,13 +42,25 @@ function Mainv2 () {
 
 
   const GetTasks =  async()=> {
-     await axios.get(API_BASE+"/Tasks")
-      .then(res => setTasks(res.data))
-      .catch (err => console.error("Error :", err));
+   
+    const response = await fetch(API_BASE+"/Tasks",{
+      headers:{
+        'Authorization' : `Bearer ${user.token}`
+      }
+    })
+    const json = await response.json()
+    setTasks(json)
+    //  await axios.get(API_BASE+"/Tasks")
+    //   .then(res => setTasks(res.data))
+    //   .catch (err => console.error("Error :", err));
   }
 
   const deleteTask =  async(id)=> {
-    await axios.delete(API_BASE+"/Tasks/" + id)
+    await axios.delete(API_BASE+"/Tasks/" + id, {
+      headers:{
+        'Authorization' : `Bearer ${user.token}`
+      }
+    } )
      .then(res => console.log(res.data))
      .catch (err => console.error("Error :", err));
 
@@ -64,12 +81,16 @@ function Mainv2 () {
   const newNanoid = nanoid()
   const newTaskData = { 
       "id" : newNanoid,
-      "username" : "Valiant",
+      "username" : user.username,
       "body" : newTaskBody,
       "ticked" : false
   }
   console.log(newTaskData)
-  await axios.post(API_BASE+"/Tasks/add",newTaskData)
+  await axios.post(API_BASE+"/Tasks/add",newTaskData, {
+    headers:{
+      'Authorization' : `Bearer ${user.token}`
+    }
+  })
   .then(res=> console.log(res.data))
   .then(setNewTaskActive(!newTaskActive))
   .then(setSuccess(true))
@@ -89,7 +110,11 @@ function Mainv2 () {
     const taskdata=(tasks.filter(task => task._id===id))
     taskdata[0].ticked = !taskdata[0].ticked
     console.log(taskdata[0].ticked)
-     const data = axios.post(API_BASE + "/tasks/update/" + id, taskdata[0])
+     axios.post(API_BASE + "/tasks/update/" + id, taskdata[0],{
+      headers:{
+        'Authorization' : `Bearer ${user.token}`
+      }
+    })
     .then(res => console.log(res))
 
 
@@ -109,10 +134,10 @@ function Mainv2 () {
   return (
     <div className='main-container'>
 
-        <h1> Hello Valiant </h1>
+        <h1>{user && `hello ${user.username}` }  </h1>
         <h4>Your Tasks</h4>
         <div className="todos">
-          {tasks.map(task =>(
+          {tasks && tasks.map(task =>(
             <div 
             className={"todo "+(task.ticked && "is-complete")} 
             key={task._id}

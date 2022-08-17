@@ -26,10 +26,12 @@ export const useLogin =()=>{
             // save the user to local storage
 
         localStorage.setItem("user", JSON.stringify(json))
-        setIsLogged(true)
         // update authContext
         dispatch({type : "LOGIN", payload : json})
         setIsLoading(false)
+        setIsLogged(true)
+
+        
         }
     }
     return { login, isLoading, error, isLogged}

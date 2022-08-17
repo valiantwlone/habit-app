@@ -7,23 +7,39 @@ import Navbar from './components/navbar/Navbar';
 import React from 'react'
 import Home from "./components/home/Home"
 import Signup from "./components/signup/Signup"
-
+import { Navigate } from "react-router-dom";
+import ThemeContextProvider from "./context/ThemeContext.js";
 
 
 
 function App() {
   return (
-    <Router>
-      
-       <Navbar />
-        <Routes>
-          <Route path="/Mainv2" exact element={<Mainv2/>} />
-          <Route path="/main" element={<Mainv2/>} />
-          <Route path="/login" element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
-        </Routes>
-      
-    </Router>
+   
+      <ThemeContextProvider>
+        <Router>
+          <Navbar />
+            <Routes>
+            <Route 
+                path="/Home"
+                exact element={ <Home /> } />
+              <Route 
+                path="/Mainv2"
+                element={ <Mainv2/> } />
+              <Route 
+                path="/main"
+                element={<Mainv2/>} />
+              <Route 
+                path="/login"
+                element={<Login /> } />
+              <Route 
+              path='/signup' 
+              element={<Signup />} />
+            </Routes>
+          
+        </Router>
+      </ThemeContextProvider>
+
+  
     
 
   );

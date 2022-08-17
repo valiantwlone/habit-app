@@ -8,6 +8,8 @@ import twitterIcon from '../../images/twitter-icon.png'
 import {useState, useEffect} from 'react'
 import axios from 'axios'
 import { useSignup } from "../../hooks/useSignup"
+import { useNavigate } from "react-router-dom";
+
 
 const API_BASE = 'http://localhost:3001';
 
@@ -20,6 +22,7 @@ const Signup = () => {
     const [username, setUsername] =  useState("");
     const [password, setPassword] = useState("")
     const {signup , error, isLoading} = useSignup()
+    const navigate = useNavigate();
 
     
     const handleChange= (event)=>{
@@ -34,10 +37,10 @@ const Signup = () => {
         }
     } 
 
-     const handleSubmit= async(e) =>{
-        e.preventDefault()
+            const handleSubmit= async(e) =>{
+                e.preventDefault()
 
-        await signup(username, password)
+                await signup(username, password)
         // const newUserData ={
         //     "username" : username,
         //     "password" : password

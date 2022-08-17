@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Logo from '../../images/Habit-logo.png'
 import './login.css'
 import userIcon from '../../images/user-icon.png'
@@ -7,6 +7,9 @@ import facebookIcon from '../../images/facebook-icon.png'
 import twitterIcon from '../../images/twitter-icon.png'
 import { useLogin } from '../../hooks/useLogin'
 import { useState } from 'react'
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from '../../hooks/useAuthContext'
+
 
 
 const Login = () => {
@@ -14,6 +17,15 @@ const Login = () => {
   const [password, setPassword] = useState("")
   const {login, error, isLoading, isLogged} = useLogin()
   const [logged, setLogged]= useState(isLogged)
+  const navigate = useNavigate();
+  const {user} = useAuthContext()
+
+
+  useEffect(()=>{
+    if(user){
+      navigate("/home")
+    }
+  },[user])
 
   const handleChange= (event)=>{
     const value = event.target.value
@@ -31,7 +43,11 @@ const Login = () => {
       e.preventDefault()
 
       await login(username, password)
+
+      
+
     }
+
 
   return (
     <div className='login-app'>
@@ -59,7 +75,7 @@ const Login = () => {
               />
           </div>
           <div className="button-div">
-            <button disabled={isLoading} onClick={handleSubmit} className='signin-button'>Sign In</button>
+            <button disabled={isLoading} onClick={handleSubmit} className='signin-button'>{isLoading ? "Loading..." : "Sign In"}</button>
             <div className='social-button'>
               <button className='facebook-button'><img src={facebookIcon} className="facebook-icon" /></button>
               <button className="twitter-button"><img src={twitterIcon} className="twitter-icon" /></button>

@@ -1,15 +1,21 @@
 const router = require('express').Router();
 let Task = require('../models/DailyTask');
 
+const requireAuth = require("../middleware/requireAuth")
+//require auth for all wokrout
+router.use(requireAuth)
+
 router.route('/').get((req, res) => {
-  Task.find()
+  Task.findOne(req.params.username)
     .then(tasks => res.json(tasks))
     .catch(err => res.status(400).json('Error: ' + err));
+
+    console.log(tasks)
 });
 
 router.route('/add').post((req, res) => {
   const id = req.body.id;
-  const username = req.body.username;
+  const username = req.body.username; // token in client
   const body = req.body.body;
   const ticked = req.body.ticked;
 
@@ -21,13 +27,13 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/:id').get((req, res) => {
-    Task.findById(req.params.id)
+    Task.findById(req.params.username)
       .then(task => res.json(task))
       .catch(err => res.status(400).json('Error: ' + err));
   });
   
   router.route('/:id').delete((req, res) => {
-    Task.findByIdAndDelete(req.params.id)
+    Task.findByIdAndDelete(req.params.username)
       .then(() => res.json('Task deleted.'))
       .catch(err => res.status(400).json('Error: ' + err));
   });
