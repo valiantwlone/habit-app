@@ -6,11 +6,10 @@ const requireAuth = require("../middleware/requireAuth")
 router.use(requireAuth)
 
 router.route('/').get((req, res) => {
-  Task.findOne(req.params.username)
+  const {username} = req.query
+  Task.find({username : username})
     .then(tasks => res.json(tasks))
     .catch(err => res.status(400).json('Error: ' + err));
-
-    console.log(tasks)
 });
 
 router.route('/add').post((req, res) => {
@@ -27,18 +26,19 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/:id').get((req, res) => {
-    Task.findById(req.params.username)
+    Task.findById(req.params.id)
       .then(task => res.json(task))
       .catch(err => res.status(400).json('Error: ' + err));
   });
   
   router.route('/:id').delete((req, res) => {
-    Task.findByIdAndDelete(req.params.username)
+    Task.findByIdAndDelete(req.params.id)
       .then(() => res.json('Task deleted.'))
       .catch(err => res.status(400).json('Error: ' + err));
   });
   
   router.route('/update/:id').post((req, res) => {
+    console.log(req.params.id)
     Task.findById(req.params.id)
       .then(task => {
         task.id = req.body.id;

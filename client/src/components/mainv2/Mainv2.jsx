@@ -25,12 +25,12 @@ function Mainv2 () {
   };
 
   useEffect( ()=>{
-    if(user){
+  
       GetTasks()
 
-    }
+    
 
-  },[user, tasks])
+  },[user])
 
   useEffect( ()=>{
     
@@ -42,14 +42,22 @@ function Mainv2 () {
 
 
   const GetTasks =  async()=> {
-   
-    const response = await fetch(API_BASE+"/Tasks",{
+    if(!user){
+      console.log('You must be logged in')
+      return
+    }
+   console.log(user)
+    const response = await axios.get(API_BASE+"/Tasks",{
+      params :{
+        'username' : `${user.username}`
+      },
       headers:{
         'Authorization' : `Bearer ${user.token}`
       }
+
     })
-    const json = await response.json()
-    setTasks(json)
+    .then(res => setTasks(res.data))
+    .catch (err => console.error("Error :", err))
     //  await axios.get(API_BASE+"/Tasks")
     //   .then(res => setTasks(res.data))
     //   .catch (err => console.error("Error :", err));
