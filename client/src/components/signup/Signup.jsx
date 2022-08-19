@@ -9,6 +9,7 @@ import {useState, useEffect} from 'react'
 import axios from 'axios'
 import { useSignup } from "../../hooks/useSignup"
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 
 const API_BASE = 'http://localhost:3001';
@@ -23,6 +24,13 @@ const Signup = () => {
     const [password, setPassword] = useState("")
     const {signup , error, isLoading} = useSignup()
     const navigate = useNavigate();
+    const {user} = useAuthContext();
+
+    useEffect(()=>{
+      if(user){
+        navigate("/home")
+      }
+    },[user])
 
     
     const handleChange= (event)=>{
